@@ -1,0 +1,8 @@
+{
+  "name": "BeerOffer",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

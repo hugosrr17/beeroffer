@@ -1,0 +1,111 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div class="logo">
+    <ion-img src="assets/logo/full.png" class="ion-align-self-end"></ion-img>
+  </div>
+
+  <ion-slides>
+    <ion-slide>
+      <div class="slide-inner">
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input [(ngModel)]="userLogin.email" color="light" type="email"></ion-input>
+        </ion-item>
+
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input [(ngModel)]="userLogin.password" color="light" type="password"></ion-input>
+        </ion-item>
+        <div class="login-btn">
+          <ion-button (click)="login()" color="dark">Login</ion-button>
+        </div>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="slide-inner">
+
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Nome completo</ion-label>
+          <ion-input (change)="validation()" [(ngModel)]="userProfile.name" color="light" type="text"></ion-input>
+        </ion-item>
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Cidade</ion-label>
+
+          <ion-select (change)="validation()" [(ngModel)]="userProfile.city" placeholder="Select One">
+            <ion-select-option value="AC">Acre</ion-select-option>
+            <ion-select-option value="AL">Alagoas</ion-select-option>
+            <ion-select-option value="AP">Amapá</ion-select-option>
+            <ion-select-option value="AM">Amazonas</ion-select-option>
+            <ion-select-option value="BA">Bahia</ion-select-option>
+            <ion-select-option value="CE">Ceará</ion-select-option>
+            <ion-select-option value="DF">Distrito Federal</ion-select-option>
+            <ion-select-option value="ES">Espírito Santo</ion-select-option>
+            <ion-select-option value="GO">Goiás</ion-select-option>
+            <ion-select-option value="MA">Maranhão</ion-select-option>
+            <ion-select-option value="MT">Mato Grosso</ion-select-option>
+            <ion-select-option value="MS">Mato Grosso do Sul</ion-select-option>
+            <ion-select-option value="MG">Minas Gerais</ion-select-option>
+            <ion-select-option value="PA">Pará</ion-select-option>
+            <ion-select-option value="PB">Paraíba</ion-select-option>
+            <ion-select-option value="PR">Paraná</ion-select-option>
+            <ion-select-option value="PE">Pernambuco</ion-select-option>
+            <ion-select-option value="PI">Piauí</ion-select-option>
+            <ion-select-option value="RJ">Rio de Janeiro</ion-select-option>
+            <ion-select-option value="RN">Rio Grande do Norte</ion-select-option>
+            <ion-select-option value="RS">Rio Grande do Sul</ion-select-option>
+            <ion-select-option value="RO">Rondônia</ion-select-option>
+            <ion-select-option value="RR">Roraima</ion-select-option>
+            <ion-select-option value="SC">Santa Catarina</ion-select-option>
+            <ion-select-option value="SP">São Paulo</ion-select-option>
+            <ion-select-option value="SE">Sergipe</ion-select-option>
+            <ion-select-option value="TO">Tocantins</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input (change)="validation()" [(ngModel)]="userRegister.email" color="light" type="email"></ion-input>
+        </ion-item>
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input (change)="validation()" [(ngModel)]="userRegister.password" color="light" type="password">
+          </ion-input>
+        </ion-item>
+        <ion-item class="" lines="none">
+          <ion-label position="floating">Senha novamente</ion-label>
+          <ion-input (change)="validation()" [(ngModel)]="verifyPasswordRegister" color="light" type="password">
+          </ion-input>
+        </ion-item>
+
+
+        <ion-button [disabled]="validation()" (click)="register()" color="dark">Cadastrar</ion-button>
+        <small *ngIf="messageErrorRegister">
+          {{messageErrorRegister}}
+        </small>
+      </div>
+
+    </ion-slide>
+  </ion-slides>
+
+
+
+  <ion-segment (ionChange)="segmentChanged($event)" mode="ios" value="login">
+    <ion-segment-button mode="ios" value="login">
+      <ion-label>Login</ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="register">
+      <ion-label>Cadastro</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+
+
+
+</ion-content>

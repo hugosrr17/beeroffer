@@ -1,0 +1,98 @@
+ion-content {
+    --ion-background-color: #ef9f00;
+}
+
+ion-item {
+    color: white;
+    // --border-color: rgb(116, 116, 116);
+    ion-input:focus {
+        border-color: white !important;
+        color: white !important;
+    }
+}
+ion-slides {
+    height: 50%;
+}
+
+ion-segment {
+    position: absolute;
+    bottom: 0;
+}
+
+ion-button {
+    width: 50%;
+}
+small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-inner {
+    width: 100%;
+}
+.swiper-slide {
+    overflow-y: auto;
+    display: block;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.logo {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+
+    ion-img {
+        width: 80vw;
+    }
+}
+
+// ::-webkit-scrollbar {
+//     -webkit-appearance: none;
+// }
+
+// ::-webkit-scrollbar:vertical {
+//     width: 11px;
+// }
+
+// ::-webkit-scrollbar:horizontal {
+//     height: 11px;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//     border-radius: 8px;
+//     border: 2px solid white;
+//     background-color: rgba(0, 0, 0, .5);
+// }
+
+// ::-webkit-scrollbar-track {
+//     background-color: #fff;
+//     border-radius: 8px;
+// }
+
+::-webkit-scrollbar {
+    width: 5px;
+    right: 20px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    background-color: #07f;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+    background-color: #000;
+}
