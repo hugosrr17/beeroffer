@@ -38,11 +38,8 @@ export class LoginPage implements OnInit {
     public alertController: AlertController,
     private storage: Storage) { }
   ngOnInit() {
-
-    this.storage.get('user').then((val) => {
-      console.log(val);
-    });
   }
+
 
   async login() {
     try {
@@ -78,7 +75,7 @@ export class LoginPage implements OnInit {
   validation() {
     if (!!this.userProfile.name &&
       !!this.userProfile.city &&
-      this.validateEmail() &&
+      this.validateEmail(this.userRegister.email) &&
       !!this.userRegister.password &&
       this.verifyPassword()
     ) {
@@ -89,8 +86,8 @@ export class LoginPage implements OnInit {
   }
 
 
-  validateEmail() {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userRegister.email)) {
+  validateEmail(email) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       this.messageErrorRegister = null;
       return (true);
     } else {
