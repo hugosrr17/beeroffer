@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 
 
 
@@ -24,28 +25,29 @@ export class LoginPage implements OnInit {
   private wavesDifference = 100;
 
 
-  private loading = this.loadingController.create({
-    cssClass: 'my-custom-class',
-    message: 'Please wait...',
-    duration: 2000
-  });
+
 
   @ViewChild(IonSlides) slides: IonSlides;
 
   constructor(private auth: AuthService,
-    private profileService: ProfileService,
-    public loadingController: LoadingController,
-    public alertController: AlertController,
-    private storage: Storage) { }
+              private profileService: ProfileService,
+              public loadingController: LoadingController,
+              public alertController: AlertController,
+              private storage: Storage,
+              private router: Router) { }
   ngOnInit() {
   }
+
 
 
   async login() {
     try {
       const r = await this.auth.login(this.userLogin);
+      this.presentLoading('Estamos realizando a sua autenticação!', true);
       if (r) {
+        this.presentLoading('Estamos realizando a sua autenticação!', false);
         this.storage.set('user', r);
+        this.router.navigate(['home']);
       }
     } catch (err) {
       this.presentAlert(this.mapError(err.code));
@@ -124,17 +126,7 @@ export class LoginPage implements OnInit {
     this.slides.slideNext();
   }
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Please wait...',
-      duration: 2000
-    });
-    await loading.present();
 
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
-  }
 
   validateName(name) {
     const regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
@@ -157,6 +149,22 @@ export class LoginPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  async presentLoading(msg: string, show: boolean) {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: msg,
+      duration: 2000
+    });
+
+    if (show) {
+      await loading.present();
+    } else {
+      await loading.dismiss();
+    }
+
   }
 
 

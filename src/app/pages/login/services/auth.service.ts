@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-
+  private userClaims: any;
   constructor(private afa: AngularFireAuth) { }
 
   public login(user: User) {
@@ -18,25 +18,11 @@ export class AuthService {
   }
 
 
-  async isLogged() {
-    await this.afa.onAuthStateChanged(user => {
-      return user;
-    });
- }
-
- 
-
   public register(user: User) {
     return this.afa.createUserWithEmailAndPassword(user.email, user.password);
   }
 
-  // firebase.auth().onAuthStateChanged(function(user) {
-  //   if (user) {
-  //     // User is signed in.
-  //   } else {
-  //     // No user is signed in.
-  //   }
-  // });
+
 
 
 }
