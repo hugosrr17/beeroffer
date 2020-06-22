@@ -3,12 +3,10 @@ import { ProfileService } from './services/profile.service';
 import { AuthService } from './services/auth.service';
 import { User } from './interfaces/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, AlertController } from '@ionic/angular';
-import { LoadingController } from '@ionic/angular';
+import { IonSlides } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { Router } from '@angular/router';
-
-
+import { MapMenssageFirebaseService } from 'src/app/services/map-menssage-firebase.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -31,54 +29,46 @@ export class LoginPage implements OnInit {
 
   constructor(private auth: AuthService,
               private profileService: ProfileService,
-              public loadingController: LoadingController,
-              public alertController: AlertController,
               private storage: Storage,
-              private router: Router) { }
-  ngOnInit() {
-  }
+              private notification: NotificationService
+  ) { }
 
+  ngOnInit() {
+    this.auth.isLogged();
+  }
 
 
   async login() {
+    this.notification.presentLoading(true, 'Estamos realizando a sua autenticação!');
     try {
       const r = await this.auth.login(this.userLogin);
-      this.presentLoading('Estamos realizando a sua autenticação!', true);
       if (r) {
-        this.presentLoading('Estamos realizando a sua autenticação!', false);
-        this.storage.set('user', r);
-        this.router.navigate(['home']);
+        const p = await this.profileService.getProfile(r.user.uid).subscribe(event => this.storage.set('user', event));
       }
     } catch (err) {
-      this.presentAlert(this.mapError(err.code));
-
-    }
-  }
-
-  async register() {
-    try {
-      const r = await this.auth.register(this.userRegister);
-      if (r) {
-        this.userProfile.uid = r.user.uid;
-        try {
-          const p = await this.profileService.push(this.userProfile);
-        } catch (err) {
-          this.presentAlert(this.mapError(err.code));
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      this.presentAlert(this.mapError(err.code));
+      this.notification.presentLoading(false);
+      this.notification.presentAlert(MapMenssageFirebaseService.mapError(err.code));
     }
   }
 
 
+  validationLogin() {
+    if (
+      !!this.validateEmail(this.userLogin.email) &&
+      !!this.userLogin.password
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-  validation() {
-    if (!!this.userProfile.name &&
+  validationFormRegister() {
+    if (
+      !!this.userProfile.name &&
       !!this.userProfile.city &&
-      this.validateEmail(this.userRegister.email) &&
       !!this.userRegister.password &&
+      this.validateEmail(this.userRegister.email) &&
       this.verifyPassword()
     ) {
       return false;
@@ -88,6 +78,24 @@ export class LoginPage implements OnInit {
   }
 
 
+  async register() {
+    this.notification.presentLoading(true, 'Bem vindo(a) ao BeerOffer! Bora economizar na "cerva"!');
+    try {
+      const r = await this.auth.register(this.userRegister);
+      if (r) {
+        this.userProfile.uid = r.user.uid;
+        const pushProfile = await this.profileService.pushProfile(this.userProfile, this.userProfile.uid);
+        const getProfile = await this.profileService.getProfile(r.user.uid).subscribe(event => this.storage.set('user', event));
+        if (getProfile) {
+          this.auth.isLogged();
+        }
+      }
+    } catch (err) {
+      this.notification.presentAlert(MapMenssageFirebaseService.mapError(MapMenssageFirebaseService.mapError(err.code)));
+    }
+  }
+
+  
   validateEmail(email) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       this.messageErrorRegister = null;
@@ -139,47 +147,4 @@ export class LoginPage implements OnInit {
   }
 
 
-
-  async presentAlert(msg: string) {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Ops...',
-      message: msg,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-
-  async presentLoading(msg: string, show: boolean) {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: msg,
-      duration: 2000
-    });
-
-    if (show) {
-      await loading.present();
-    } else {
-      await loading.dismiss();
-    }
-
-  }
-
-
-  mapError(error) {
-    const mapCodes = {
-      'auth/email-already-in-use': 'Você já está cadastrado no Beer Offer!',
-      'auth/weak-password': 'A senha deve ter pelo menos 6 caracteres.',
-      'auth/wrong-password': 'A senha é inválida ou o usuário não está cadastrado.'
-    };
-    if (mapCodes[error]) {
-      return mapCodes[error];
-    }
-    else {
-      return error;
-    }
-
-  }
 }

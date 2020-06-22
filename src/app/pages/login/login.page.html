@@ -14,15 +14,15 @@
       <div class="slide-inner">
         <ion-item class="" lines="none">
           <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="userLogin.email" color="light" type="email"></ion-input>
+          <ion-input (change)="validationLogin()" [(ngModel)]="userLogin.email" color="light" type="email"></ion-input>
         </ion-item>
 
         <ion-item class="" lines="none">
           <ion-label position="floating">Senha</ion-label>
-          <ion-input [(ngModel)]="userLogin.password" color="light" type="password"></ion-input>
+          <ion-input (change)="validationLogin()" [(ngModel)]="userLogin.password" color="light" type="password"></ion-input>
         </ion-item>
         <div class="login-btn">
-          <ion-button (click)="login()" color="dark">Login</ion-button>
+          <ion-button [disabled]="validationLogin()" (click)="login()" color="dark">Login</ion-button>
         </div>
       </div>
     </ion-slide>
@@ -32,12 +32,12 @@
 
         <ion-item class="" lines="none">
           <ion-label position="floating">Nome completo</ion-label>
-          <ion-input (change)="validation()" [(ngModel)]="userProfile.name" color="light" type="text"></ion-input>
+          <ion-input (change)="validationFormRegister()" [(ngModel)]="userProfile.name" color="light" type="text"></ion-input>
         </ion-item>
         <ion-item class="" lines="none">
           <ion-label position="floating">Cidade</ion-label>
 
-          <ion-select (change)="validation()" [(ngModel)]="userProfile.city" placeholder="Select One">
+          <ion-select (change)="validationFormRegister()" [(ngModel)]="userProfile.city" placeholder="Select One">
             <ion-select-option value="AC">Acre</ion-select-option>
             <ion-select-option value="AL">Alagoas</ion-select-option>
             <ion-select-option value="AP">Amapá</ion-select-option>
@@ -70,21 +70,21 @@
 
         <ion-item class="" lines="none">
           <ion-label position="floating">Email</ion-label>
-          <ion-input (change)="validation()" [(ngModel)]="userRegister.email" color="light" type="email"></ion-input>
+          <ion-input (change)="validationFormRegister()" [(ngModel)]="userRegister.email" color="light" type="email"></ion-input>
         </ion-item>
         <ion-item class="" lines="none">
           <ion-label position="floating">Senha</ion-label>
-          <ion-input (change)="validation()" [(ngModel)]="userRegister.password" color="light" type="password">
+          <ion-input (change)="validationFormRegister()" [(ngModel)]="userRegister.password" color="light" type="password">
           </ion-input>
         </ion-item>
         <ion-item class="" lines="none">
           <ion-label position="floating">Senha novamente</ion-label>
-          <ion-input (change)="validation()" [(ngModel)]="verifyPasswordRegister" color="light" type="password">
+          <ion-input (change)="validationFormRegister()" [(ngModel)]="verifyPasswordRegister" color="light" type="password">
           </ion-input>
         </ion-item>
 
 
-        <ion-button [disabled]="validation()" (click)="register()" color="dark">Cadastrar</ion-button>
+        <ion-button [disabled]="validationFormRegister()" (click)="register()" color="dark">Cadastrar</ion-button>
         <small *ngIf="messageErrorRegister">
           {{messageErrorRegister}}
         </small>

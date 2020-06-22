@@ -1,20 +1,32 @@
+import { Profile } from './../interfaces/profile';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Profile } from '../interfaces/profile';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs/internal/Observable';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  private PATH = 'profile/';
+  // private profileRef = this.firestore.collection('profile');
+  private profile: AngularFirestoreCollection<Profile>;
 
-
-  constructor(public db: AngularFireDatabase) {
-
+  constructor(public firestore: AngularFirestore) {
 
   }
 
-  push(profile: Profile) {
-    this.db.list(this.PATH).push(profile);
+  pushProfile(profile: Profile, id: string) {
+    this.firestore.doc(`profile/${id}`).set(profile);
   }
+
+
+  getProfile(id: string): Observable<any[]> {
+    const profile = this.firestore.collection<any>('profile', ref => {
+      return ref.where('uid', '==', `${id}`);
+    });
+
+    return profile.valueChanges();
+  }
+
 }
